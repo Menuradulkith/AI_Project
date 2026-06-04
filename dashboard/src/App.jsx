@@ -77,8 +77,8 @@ export default function App() {
   }, [tickets, search, sortBy])
 
   // Separate tickets by classification status
-  const { localisation, notLocalisation, needsReview, unclassified } = useMemo(() => {
-    const loc = [], notLoc = [], review = [], unclass = []
+  const { localisation, needsReview, unclassified } = useMemo(() => {
+    const loc = [], review = [], unclass = []
     for (const t of filtered) {
       const cls = t._classification
       if (!cls) {
@@ -87,13 +87,11 @@ export default function App() {
         review.push(t)
       } else if (cls.board?.toLowerCase() === 'localisation') {
         loc.push(t)
-      } else if (cls.board?.toLowerCase() === 'not localisation') {
-        notLoc.push(t)
       } else {
-        unclass.push(t)
+        unclass.push(t)  // classified as something else
       }
     }
-    return { localisation: loc, notLocalisation: notLoc, needsReview: review, unclassified: unclass }
+    return { localisation: loc, needsReview: review, unclassified: unclass }
   }, [filtered])
 
   const onManualSync = async () => {
@@ -163,7 +161,7 @@ export default function App() {
             <p className="page-sub">
               {isPerformance
                 ? 'Classification stats, sync history & scheduler control'
-                : <>Showing <strong>{isGclz ? filtered.length : localisation.length + notLocalisation.length + needsReview.length}</strong> ticket{(isGclz ? filtered.length : localisation.length + notLocalisation.length + needsReview.length) !== 1 ? 's' : ''}{isGclz && ' (read-only)'}</>
+                : <>Showing <strong>{isGclz ? filtered.length : localisation.length + needsReview.length}</strong> ticket{(isGclz ? filtered.length : localisation.length + needsReview.length) !== 1 ? 's' : ''}{isGclz && ' (read-only)'}</>
               }
             </p>
           </div>
@@ -171,7 +169,6 @@ export default function App() {
             {!isGclz && !isPerformance && (
               <>
                 <span className="stat-badge loc">🌍 {localisation.length}</span>
-                <span className="stat-badge not-loc">❌ {notLocalisation.length}</span>
                 <span className="stat-badge review">⚠️ {needsReview.length}</span>
               </>
             )}
@@ -301,7 +298,7 @@ export default function App() {
               </div>
             )}
 
-            {/* Classified as Localisation (HIGH confidence) */}
+            {/* Classified as Localization (HIGH confidence) */}
             {localisation.length > 0 && (
               <div className="board-section">
                 <div className="board-section-header localisation-header">
@@ -320,24 +317,6 @@ export default function App() {
               </div>
             )}
 
-            {/* Not Localisation */}
-            {notLocalisation.length > 0 && (
-              <div className="board-section">
-                <div className="board-section-header not-localisation-header">
-                  ❌ Not Localisation <span className="board-count">{notLocalisation.length}</span>
-                </div>
-                <div className="grid">
-                  {notLocalisation.map(t => (
-                    <TicketCard
-                      key={t.ticket_id}
-                      ticket={t}
-                      onClick={setSelectedTicket}
-                      classification={t._classification}
-                    />
-                  ))}
-                </div>
-              </div>
-            )}
 
           </>
         )}

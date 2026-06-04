@@ -61,7 +61,6 @@
   font-size: 11px; font-weight: 700; color: var(--text-muted);
 }
 .stat-badge.loc { color: #60a5fa; border-color: #3b82f640; }
-.stat-badge.not-loc { color: #f87171; border-color: #ef444440; }
 .stat-badge.review { color: #f59e0b; border-color: #f59e0b40; }
 .stat-badge.unclass { color: #9ca3af; }
 
@@ -108,19 +107,17 @@
   background: #ffffff14; border-radius: 12px;
   padding: 1px 8px; font-size: 12px; font-weight: 600;
 }
-.finance-header           { color: #60a5fa; background: #1a2a4a; border-color: #4f8ef7; }
-.localisation-header      { color: #4ade80; background: #0f2a1a; border-color: #22c55e; }
-.not-localisation-header  { color: #f87171; background: #2a0f0f; border-color: #ef4444; }
-.unclassified-header      { color: #9ca3af; background: #1a1d27; border-color: #555b7e; }
-.review-header            { color: #f59e0b; background: #2a2000; border-color: #f59e0b; }
-.gclz-header              { color: #4ade80; background: #0f2a1a; border-color: #22c55e; }
+.finance-header        { color: #60a5fa; background: #1a2a4a; border-color: #4f8ef7; }
+.localisation-header   { color: #4ade80; background: #0f2a1a; border-color: #22c55e; }
+.unclassified-header   { color: #9ca3af; background: #1a1d27; border-color: #555b7e; }
+.review-header         { color: #f59e0b; background: #2a2000; border-color: #f59e0b; }
+.gclz-header           { color: #4ade80; background: #0f2a1a; border-color: #22c55e; }
 
-[data-theme="light"] .finance-header             { color: #2563eb; background: #eff6ff; }
-[data-theme="light"] .localisation-header        { color: #16a34a; background: #f0fdf4; }
-[data-theme="light"] .not-localisation-header    { color: #dc2626; background: #fef2f2; }
-[data-theme="light"] .unclassified-header        { color: #6b7280; background: #f3f4f6; }
-[data-theme="light"] .review-header              { color: #d97706; background: #fffbeb; }
-[data-theme="light"] .gclz-header                { color: #16a34a; background: #f0fdf4; }
+[data-theme="light"] .finance-header      { color: #2563eb; background: #eff6ff; }
+[data-theme="light"] .localisation-header { color: #16a34a; background: #f0fdf4; }
+[data-theme="light"] .unclassified-header { color: #6b7280; background: #f3f4f6; }
+[data-theme="light"] .review-header       { color: #d97706; background: #fffbeb; }
+[data-theme="light"] .gclz-header         { color: #16a34a; background: #f0fdf4; }
 .section-hint { color: var(--text-muted); font-size: 12px; margin: 2px 2px 6px; }
 
 /* States */
