@@ -20,7 +20,7 @@ export function useTickets(dashboardGroup = 'FIZ') {
     try {
       const fetchFn = dashboardGroup === 'GCLZ' ? fetchGclzTickets : fetchFizTickets
       const data = await fetchFn()
-      setTickets(data)
+      setTickets(Array.isArray(data) ? data : [])
       setLastFetch(new Date())
     } catch (e) {
       const msg = e?.response?.data?.error ?? e.message ?? 'Unknown error'

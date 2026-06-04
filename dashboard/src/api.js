@@ -11,10 +11,10 @@ const client = axios.create({ baseURL: BASE_URL, timeout: 15000 })
 
 // Dashboard data (from SQLite only — no live Jira calls)
 export const fetchFizTickets  = () =>
-  client.get('/fiz').then(r => r.data.data)
+  client.get('/fiz').then(r => r.data.data ?? [])
 
 export const fetchGclzTickets = () =>
-  client.get('/gclz').then(r => r.data.data)
+  client.get('/gclz').then(r => r.data.data ?? [])
 
 export const fetchDashboardStats = () =>
   client.get('/dashboard/stats').then(r => r.data.data)
