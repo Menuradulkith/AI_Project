@@ -1,0 +1,88 @@
+﻿/* ─── Global reset & design tokens ─────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:             #0b1020;
+  --surface:        #131a2a;
+  --surface2:       #182238;
+  --surface3:       #1f2b45;
+  --border:         #26324a;
+  --accent:         #4f8ef7;
+  --accent-strong:  #2d5bb0;
+  --text:           #eef2f8;
+  --text-muted:     #9aa4bf;
+  --green:          #22c55e;
+  --yellow:         #f59e0b;
+  --red:            #ef4444;
+  --purple:         #a855f7;
+  --teal:           #14b8a6;
+  --radius:         12px;
+  --radius-sm:      8px;
+  --radius-lg:      16px;
+  --shadow-sm:      0 2px 10px rgba(0,0,0,.25);
+  --shadow:         0 10px 32px rgba(0,0,0,.35);
+  --transition:     160ms ease;
+  --font:           'Inter', system-ui, sans-serif;
+}
+
+/* ─── Light theme ─────────────────────────────────────────── */
+[data-theme="light"] {
+  --bg:             #f0f2f5;
+  --surface:        #ffffff;
+  --surface2:       #f8f9fb;
+  --surface3:       #eef0f4;
+  --border:         #d1d5db;
+  --accent:         #2563eb;
+  --accent-strong:  #1d4ed8;
+  --text:           #111827;
+  --text-muted:     #6b7280;
+  --green:          #16a34a;
+  --yellow:         #d97706;
+  --red:            #dc2626;
+  --purple:         #7c3aed;
+  --teal:           #0d9488;
+}
+
+body {
+  background: radial-gradient(1000px 600px at 15% -10%, #1c2640, var(--bg) 60%);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 14px;
+  line-height: 1.5;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+[data-theme="light"] body {
+  background: var(--bg);
+}
+
+/* ─── Toggle switch ──────────────────────────────────────── */
+.toggle-wrap {
+  display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--text-muted);
+}
+.toggle {
+  position: relative; width: 40px; height: 22px;
+  background: #555b7e; border-radius: 999px;
+  cursor: pointer; transition: background 200ms;
+  border: none; padding: 0; flex-shrink: 0;
+}
+.toggle.on { background: var(--accent); }
+.toggle::after {
+  content: ''; position: absolute;
+  top: 3px; left: 3px; width: 16px; height: 16px;
+  background: #fff; border-radius: 50%;
+  transition: transform 200ms;
+}
+.toggle.on::after { transform: translateX(18px); }
+
+button, input, select, textarea { font: inherit; color: inherit; }
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+[data-theme="light"] ::-webkit-scrollbar-track { background: #f0f2f5; }
+[data-theme="light"] ::-webkit-scrollbar-thumb { background: #c4c9d4; }

@@ -1,0 +1,9 @@
+requests
+python-dotenv
+flask
+flask-cors
+langchain
+langchain-core
+langchain-openai
+apscheduler
+gunicorn
