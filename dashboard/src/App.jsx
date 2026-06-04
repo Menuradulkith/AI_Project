@@ -229,7 +229,7 @@ export default function App() {
           <div className="error-banner">
             ⚠ {error}
             <br />
-            <small>Make sure the Flask backend is running on port 5000.</small>
+            <small>Make sure the Flask backend (Railway) is reachable and VITE_API_URL is set in Vercel.</small>
           </div>
         )}
 
