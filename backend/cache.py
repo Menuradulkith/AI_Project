@@ -413,13 +413,14 @@ def get_fiz_tickets() -> list[dict]:
 
 
 def get_gclz_tickets() -> list[dict]:
-    """Get all tickets that have been moved to GCLZ."""
+    """Get tickets moved to GCLZ within the last 14 days."""
     with _conn() as c:
         rows = c.execute("""
             SELECT ticket_json, classification, confidence, reason, signals,
                    gclz_ticket_id, moved_at, classified_at
             FROM tickets
             WHERE dashboard_group = 'GCLZ' AND moved_to_gclz = 1
+              AND moved_at >= datetime('now', '-14 days')
             ORDER BY moved_at DESC
         """).fetchall()
     
