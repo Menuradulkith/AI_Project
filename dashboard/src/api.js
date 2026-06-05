@@ -43,3 +43,7 @@ export const startScheduler  = () =>
 export const stopScheduler   = () =>
   client.post('/scheduler/stop').then(r => r.data.data)
 
+// Chat
+export const sendChatMessage = (message, history) =>
+  client.post('/chat', { message, history }).then(r => r.data)
+

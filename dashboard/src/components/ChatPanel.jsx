@@ -1,4 +1,5 @@
 ﻿import { useState, useRef, useEffect } from 'react'
+import { sendChatMessage } from '../api'
 
 const SUGGESTIONS = [
   'How many tickets are classified?',
@@ -35,15 +36,7 @@ export default function ChatPanel({ onClose }) {
     setLoading(true)
 
     try {
-      const res = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          message,
-          history: nextMsgs.slice(-10),
-        }),
-      })
-      const data = await res.json()
+      const data = await sendChatMessage(message, nextMsgs.slice(-10))
       setMessages((prev) => [
         ...prev,
         {
