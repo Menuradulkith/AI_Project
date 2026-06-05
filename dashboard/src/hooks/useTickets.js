@@ -14,13 +14,15 @@ export function useTickets(dashboardGroup = 'FIZ') {
   const [loading,   setLoading]   = useState(true)
   const [error,     setError]     = useState(null)
   const [lastFetch, setLastFetch] = useState(null)
+  const [prevGroup, setPrevGroup] = useState(dashboardGroup)
   const pollRef = useRef(null)
 
-  // When tab changes, immediately show that tab's cached data (no flash of wrong tab's tickets)
-  useEffect(() => {
+  // Sync state during render when tab changes to avoid flashing stale tickets
+  if (dashboardGroup !== prevGroup) {
+    setPrevGroup(dashboardGroup)
     setTickets(_cache[dashboardGroup] ?? [])
     setError(null)
-  }, [dashboardGroup])
+  }
 
   const load = useCallback(async () => {
     // null means the tab doesn't need ticket data (e.g. Performance tab)
