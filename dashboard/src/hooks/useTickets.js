@@ -9,42 +9,50 @@ const POLL_INTERVAL_MS = 5 * 60 * 1000
 const _cache = { FIZ: [], GCLZ: [] }
 
 export function useTickets(dashboardGroup = 'FIZ') {
-  // Initialise from cache so switching back to a tab shows data instantly
-  const [tickets,   setTickets]   = useState(() => _cache[dashboardGroup] ?? [])
-  const [loading,   setLoading]   = useState(true)
-  const [error,     setError]     = useState(null)
-  const [lastFetch, setLastFetch] = useState(null)
-  const [prevGroup, setPrevGroup] = useState(dashboardGroup)
+  const [state, setState] = useState({
+    FIZ: { tickets: [], loading: true, error: null, lastFetch: null },
+    GCLZ: { tickets: [], loading: true, error: null, lastFetch: null },
+  })
   const pollRef = useRef(null)
 
-  // Sync state during render when tab changes to avoid flashing stale tickets
-  if (dashboardGroup !== prevGroup) {
-    setPrevGroup(dashboardGroup)
-    setTickets(_cache[dashboardGroup] ?? [])
-    setError(null)
-  }
-
   const load = useCallback(async () => {
-    // null means the tab doesn't need ticket data (e.g. Performance tab)
-    if (!dashboardGroup) { setLoading(false); return }
-    setLoading(true)
-    setError(null)
+    if (!dashboardGroup) return
+    
+    // Set loading to true for the current group
+    setState(prev => ({
+      ...prev,
+      [dashboardGroup]: { ...prev[dashboardGroup], loading: true, error: null }
+    }))
+
     try {
       const fetchFn = dashboardGroup === 'GCLZ' ? fetchGclzTickets : fetchFizTickets
       const data = await fetchFn()
       const safe = Array.isArray(data) ? data : []
-      _cache[dashboardGroup] = safe          // update per-tab cache
-      setTickets(safe)
-      setLastFetch(new Date())
+      
+      setState(prev => ({
+        ...prev,
+        [dashboardGroup]: {
+          tickets: safe,
+          loading: false,
+          error: null,
+          lastFetch: new Date()
+        }
+      }))
     } catch (e) {
       const msg = e?.response?.data?.error ?? e.message ?? 'Unknown error'
       const is503 = e?.response?.status === 503
-      setError(is503
+      const errText = is503
         ? '⚠ Cannot reach backend — check if the Flask API is running.'
         : `API error: ${msg}`
-      )
-    } finally {
-      setLoading(false)
+      
+      setState(prev => ({
+        ...prev,
+        [dashboardGroup]: {
+          ...prev[dashboardGroup],
+          loading: false,
+          error: errText
+        }
+      }))
     }
   }, [dashboardGroup])
 
@@ -52,10 +60,17 @@ export function useTickets(dashboardGroup = 'FIZ') {
   useEffect(() => {
     load()
     if (!dashboardGroup) return
-    // Set up gentle polling (reads from SQLite, not Jira)
     pollRef.current = setInterval(load, POLL_INTERVAL_MS)
     return () => clearInterval(pollRef.current)
   }, [load, dashboardGroup])
 
-  return { tickets, loading, error, lastFetch, refresh: load }
+  const current = state[dashboardGroup] ?? { tickets: [], loading: false, error: null, lastFetch: null }
+
+  return {
+    tickets: current.tickets,
+    loading: current.loading,
+    error: current.error,
+    lastFetch: current.lastFetch,
+    refresh: load
+  }
 }
